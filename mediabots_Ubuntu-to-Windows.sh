@@ -10,7 +10,7 @@ else
 #
 # Deleting Previous Windows Installation by the Script
 #umount -l /mnt /media/script /media/sw
-#rm -rf /mediabots /floppy /virtio /media/* /tmp/*
+#rm -rf /ohmigoo /floppy /virtio /media/* /tmp/*
 #rm -f /sw.iso /disk.img 
 # installing required Ubuntu packages
 dist=$(hostnamectl | egrep "Operating System" | cut -f2 -d":" | cut -f2 -d " ")
@@ -31,14 +31,14 @@ elif [ $dist = "Ubuntu" -o $dist = "Debian" ] ; then
 fi
 sudo ln -s /usr/bin/genisoimage /usr/bin/mkisofs
 # Downloading resources
-sudo mkdir /mediabots /floppy /virtio
+sudo mkdir /ohmigoo /floppy /virtio
 link1_status=$(curl -Is https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO | grep HTTP | cut -f2 -d" ")
 link2_status=$(curl -Is https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO | grep HTTP | cut -f2 -d" ")
-#sudo wget -P /mediabots https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO # Windows Server 2016 EVAL 
+#sudo wget -P /ohmigoo https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO # Windows Server 2016 EVAL 
 if [ $link1_status = "200" ] ; then 
-	sudo wget -P /mediabots https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO
+	sudo wget -P /ohmigoo https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO
 elif [ $link2_status = "200" -o $link2_status = "301" ] ; then 
-	sudo wget -P /mediabots https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO
+	sudo wget -P /ohmigoo https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO
 else
 	echo -e "${RED}[Error]${NC} ${YELLOW}Sorry! None of Windows OS image urls are available , please report about this issue on Github page : ${NC}https://github.com/mediabots/Linux-to-Windows-with-QEMU"
 	echo "Exiting.."
@@ -92,7 +92,7 @@ else
 fi
 #
 # setting up default values
-custom_param_os="/mediabots/"$(ls /mediabots)
+custom_param_os="/ohmigoo/"$(ls /ohmigoo)
 custom_param_sw="/sw.iso"
 custom_param_virtio="/virtio/"$(ls /virtio)
 #
@@ -120,7 +120,7 @@ if [ $availableRAM -ge 4650 ] ; then # opened 2nd if
 		sudo dd if=/dev/zero of=$firstDisk bs=1M count=1 # blank out the disk
 		echo "mounting devices"
 		mount -t tmpfs -o size=4500m tmpfs /mnt
-		mv /mediabots/* /mnt
+		mv /ohmigoo/* /mnt
 		mkdir /media/sw
 		mount -t tmpfs -o size=121m tmpfs /media/sw
 		mv /sw.iso /media/sw
@@ -189,7 +189,7 @@ if [ $availableRAM -ge 4650 ] ; then
 		sudo dd if=/dev/zero of=$firstDisk bs=1M count=1 # blank out the disk
 		echo "mounting devices"
 		mount -t tmpfs -o size=4500m tmpfs /mnt
-		mv /mediabots/* /mnt
+		mv /ohmigoo/* /mnt
 		mkdir /media/sw
 		mount -t tmpfs -o size=121m tmpfs /media/sw
 		mv /sw.iso /media/sw
